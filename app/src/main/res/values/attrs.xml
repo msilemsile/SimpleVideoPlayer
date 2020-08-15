@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 播放器 -->
+    <declare-styleable name="SimplePlayer">
+        <!-- 取值 1、surfaceView 2、TextureView -->
+        <attr name="renderType" format="integer"/>
+        <!-- 取值 1、FIT_PARENT 2、FILL_PARENT 3、WRAP_CONTENT 4、16_9_FIT_PARENT 5、4_3_FIT_PARENT-->
+        <attr name="aspectRatio" format="integer"/>
+    </declare-styleable>
+</resources>
