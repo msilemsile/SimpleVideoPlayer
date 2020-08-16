@@ -3,8 +3,6 @@ package me.msile.train.player.simplevideoplayer.view;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -16,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SurfaceRenderView extends SurfaceView implements IRenderView {
+    private static final String TAG = "SurfaceRenderView";
     private MeasureHelper mMeasureHelper;
 
     public SurfaceRenderView(Context context) {
@@ -83,8 +82,8 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         private SurfaceRenderView mSurfaceView;
         private SurfaceHolder mSurfaceHolder;
 
-        public InternalSurfaceHolder(@NonNull SurfaceRenderView surfaceView,
-                                     @Nullable SurfaceHolder surfaceHolder) {
+        public InternalSurfaceHolder(SurfaceRenderView surfaceView,
+                                     SurfaceHolder surfaceHolder) {
             mSurfaceView = surfaceView;
             mSurfaceHolder = surfaceHolder;
         }
@@ -95,25 +94,21 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             }
         }
 
-        @NonNull
         @Override
         public IRenderView getRenderView() {
             return mSurfaceView;
         }
 
-        @Nullable
         @Override
         public SurfaceHolder getSurfaceHolder() {
             return mSurfaceHolder;
         }
 
-        @Nullable
         @Override
         public SurfaceTexture getSurfaceTexture() {
             return null;
         }
 
-        @Nullable
         @Override
         public Surface openSurface() {
             if (mSurfaceHolder == null)
@@ -127,12 +122,12 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
     //-------------------------
 
     @Override
-    public void addRenderCallback(@NonNull IRenderCallback callback) {
+    public void addRenderCallback(IRenderCallback callback) {
         mSurfaceCallback.addRenderCallback(callback);
     }
 
     @Override
-    public void removeRenderCallback(@NonNull IRenderCallback callback) {
+    public void removeRenderCallback(IRenderCallback callback) {
         mSurfaceCallback.removeRenderCallback(callback);
     }
 
@@ -148,11 +143,11 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         private WeakReference<SurfaceRenderView> mWeakSurfaceView;
         private Map<IRenderCallback, Object> mRenderCallbackMap = new ConcurrentHashMap<IRenderCallback, Object>();
 
-        public SurfaceCallback(@NonNull SurfaceRenderView surfaceView) {
+        public SurfaceCallback(SurfaceRenderView surfaceView) {
             mWeakSurfaceView = new WeakReference<>(surfaceView);
         }
 
-        public void addRenderCallback(@NonNull IRenderCallback callback) {
+        public void addRenderCallback(IRenderCallback callback) {
             mRenderCallbackMap.put(callback, callback);
 
             ISurfaceHolder surfaceHolder = null;
@@ -168,7 +163,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
             }
         }
 
-        public void removeRenderCallback(@NonNull IRenderCallback callback) {
+        public void removeRenderCallback(IRenderCallback callback) {
             mRenderCallbackMap.remove(callback);
         }
 
