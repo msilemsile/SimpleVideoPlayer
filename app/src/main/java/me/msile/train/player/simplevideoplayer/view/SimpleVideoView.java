@@ -95,9 +95,9 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
     }
 
     private void readStyleParameters(Context context, AttributeSet attributeSet) {
-        TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.SimplePlayer);
+        TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.SimpleVideoView);
         try {
-            int renderType = a.getInteger(R.styleable.SimplePlayer_renderType, 1);
+            int renderType = a.getInteger(R.styleable.SimpleVideoView_renderType, 1);
             switch (renderType) {
                 case 1:
                     mCurrentRender = RENDER_SURFACE_VIEW;
@@ -106,7 +106,7 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
                     mCurrentRender = RENDER_TEXTURE_VIEW;
                     break;
             }
-            int aspectRatio = a.getInteger(R.styleable.SimplePlayer_aspectRatio, 1);
+            int aspectRatio = a.getInteger(R.styleable.SimpleVideoView_aspectRatio, 1);
             switch (aspectRatio) {
                 case 1:
                     mCurrentAspectRatio = s_allAspectRatio[0];
@@ -258,21 +258,6 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
     }
 
     /**
-     * 停止播放器相关处理
-     */
-    public void stopPlayback() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-            mCurrentState = STATE_IDLE;
-            mTargetState = STATE_IDLE;
-            AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
-            am.abandonAudioFocus(null);
-        }
-    }
-
-    /**
      * 打开视频播放器
      */
     private void openVideo() {
@@ -285,7 +270,9 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
         release(false);
 
         AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
-        am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        if (am != null) {
+            am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
 
         try {
             mMediaPlayer = new MediaPlayer();
@@ -673,7 +660,26 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
                 mTargetState = STATE_IDLE;
             }
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
-            am.abandonAudioFocus(null);
+            if (am != null) {
+                am.abandonAudioFocus(null);
+            }
+        }
+    }
+
+    /**
+     * 停止播放器相关处理
+     */
+    public void stopPlayback() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+            mCurrentState = STATE_IDLE;
+            mTargetState = STATE_IDLE;
+            AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
+            if (am != null) {
+                am.abandonAudioFocus(null);
+            }
         }
     }
 

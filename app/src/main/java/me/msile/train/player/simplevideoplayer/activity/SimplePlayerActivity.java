@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import me.msile.train.player.simplevideoplayer.R;
@@ -62,9 +63,17 @@ public class SimplePlayerActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!isBackClicked) {
             controllerLayout.pause();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        controllerLayout.resume();
     }
 
     @Override

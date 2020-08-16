@@ -350,9 +350,12 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
                 if (isScrollX) {
                     gestureSeekTime(-distanceX, false);
                 }
-                if (isScrollY) {
-
-                }
+                //控制亮度和音量
+//                int[] screenPos = getDownScreenPos(e1);
+//                if (isScrollY) {
+//                    gestureBrightness(distanceY);
+//                    gestureVolume(distanceY);
+//                }
                 if (!isScrollX && !isScrollY) {
                     if (absDistanceX > absDistanceY) {
                         isScrollX = true;
@@ -396,6 +399,24 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
                 return true;
             }
         });
+    }
+
+    /**
+     * 获取当前触未知(左半边亮度、右半边音量)
+     */
+    private int[] getDownScreenPos(MotionEvent event) {
+        int width = getWidth();
+        int height = getHeight();
+        if (width <= 0 || height <= 0) {
+            return new int[]{0, 0};
+        }
+        float eventX = event.getX();
+        float eventY = event.getY();
+        int halfWidth = width >> 1;
+        int halfHeight = height >> 1;
+        int LR = eventX > halfWidth ? 1 : -1;
+        int TB = eventY > halfHeight ? 1 : -1;
+        return new int[]{LR, TB};
     }
 
     @Override
@@ -502,6 +523,20 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
         }
     }
 
+    /**
+     * 手势滑动亮度
+     */
+    private void gestureBrightness(float distanceY) {
+
+    }
+
+    /**
+     * 手势滑动音量
+     */
+    private void gestureVolume(float distanceY) {
+
+    }
+
     //格式化时间
     private String stringForTime(int timeMs) {
         initFormatter();
@@ -592,6 +627,18 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
             mStartPauseIv.setImageResource(R.drawable.play_icon);
             mCenterStateLay.setVisibility(VISIBLE);
             mCenterStateIv.setImageResource(R.drawable.play_p_icon);
+        }
+    }
+
+    //对外
+    public void resume() {
+        if (checkPlayerIsNull()) {
+            return;
+        }
+        if (!mPlayer.isPlaying()) {
+            mPlayer.start();
+            mStartPauseIv.setImageResource(R.drawable.pause_icon);
+            mCenterStateLay.setVisibility(GONE);
         }
     }
 
