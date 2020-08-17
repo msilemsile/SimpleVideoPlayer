@@ -18,6 +18,7 @@ import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -250,6 +251,14 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
 
         @Override
         public void onError() {
+            Toast.makeText(getContext(), "播放出错!", Toast.LENGTH_LONG).show();
+            if (mCenterStateLay != null) {
+                mCenterStateLay.setVisibility(VISIBLE);
+                mCenterStateIv.setImageResource(R.drawable.refresh_icon);
+            }
+            if (mLoadingPb != null) {
+                mLoadingPb.setVisibility(GONE);
+            }
         }
 
         @Override

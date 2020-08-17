@@ -86,10 +86,6 @@ public class SimplePlayerActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        onClickBackBtnEvent();
-    }
-
-    public void onClickBackBtnEvent() {
         if (controllerLayout.isFullScreen()) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             return;

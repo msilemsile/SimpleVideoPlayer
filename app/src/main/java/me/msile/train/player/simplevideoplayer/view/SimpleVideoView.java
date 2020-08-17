@@ -754,6 +754,8 @@ public class SimpleVideoView extends FrameLayout implements MediaController.Medi
         if (isInPlaybackState()) {
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
+        } else if (mCurrentState == STATE_ERROR) {
+            resume();
         }
         mTargetState = STATE_PLAYING;
     }
