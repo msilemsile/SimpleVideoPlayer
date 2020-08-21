@@ -514,6 +514,9 @@ public class SimplerPlayerControllerLayout extends FrameLayout {
             }
             final int width = isFullScreen() ? mProgressSeekBar.getWidth() * 4 : mProgressSeekBar.getWidth() * 2;
             long duration = mPlayer.getDuration();
+            if (width <= 0 || duration <= 0) {
+                return;
+            }
             if (mTouchSeekPro == 0) {
                 long position = mPlayer.getCurrentPosition();
                 mTouchSeekPro = (int) (position * 1.0f / duration * width);
